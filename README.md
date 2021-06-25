@@ -20,12 +20,12 @@ It is a wrapper for keen-slider as a webcomponent created with Atomico.
 To use in React you must first install the dependency `@atomico/react`.
 
 ```jsx
-import {Slider}
+import { Slider } from "@uppercod/keen-slider/components.react";
 ```
 
 ## Api
 
-currently the component reflects the following options from the [original api] (https://keen-slider.io/api/#api).
+currently the component reflects the following options from the [original api](https://keen-slider.io/api/#api).
 
 ### centered
 
