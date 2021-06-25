@@ -1,0 +1,24 @@
+@import "keen-slider/keen-slider.css";
+
+:host {
+  position: relative;
+  display: block;
+}
+
+::slotted([slot="left"]),
+::slotted([slot="right"]) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+::slotted([slot="left"]) {
+  left: 0;
+}
+
+::slotted([slot="right"]) {
+  right: 0;
+}
