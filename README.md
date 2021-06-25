@@ -7,12 +7,12 @@ It is a wrapper for keen-slider as a webcomponent created with Atomico.
 ### HTML
 
 ```html
-<keen-slide>
+<keen-slider>
   <div>slide 1</div>
   <div>slide 2</div>
   <div>slide 3</div>
   <div>slide 4</div>
-</keen-slide>
+</keen-slider>
 ```
 
 ### React
@@ -25,26 +25,26 @@ import {Slider}
 
 ## Api
 
-currently the component reflects the following options from the [original api](https://keen-slider.io/api/#api).
+currently the component reflects the following options from the [original api] (https://keen-slider.io/api/#api).
 
 ### centered
 
 ```html
-<keen-slide centered>
+<keen-slider centered>
   <div>slide 1</div>
   <div>slide 2</div>
   <div>slide 3</div>
   <div>slide 4</div>
-</keen-slide>
+</keen-slider>
 ```
 
 ### slidesPerView | slides-per-view
 
 ```html
-<keen-slide slides-per-view="1, 2 720px 3 1080px">
+<keen-slider slides-per-view="1, 2 720px 3 1080px">
   <div>slide 1</div>
   <div>slide 2</div>
   <div>slide 3</div>
   <div>slide 4</div>
-</keen-slide>
+</keen-slider>
 ```
