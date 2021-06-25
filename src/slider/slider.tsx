@@ -3,9 +3,9 @@ import { useChildNodes } from "@atomico/hooks/use-child-nodes";
 import { useMutationObserver } from "@atomico/hooks/use-mutation-observer";
 import KeenSlider, { TOptions } from "keen-slider";
 import { useResponsiveProp } from "./use-responsive-prop.js";
-import style from "./slide.css";
+import style from "./slider.css";
 
-function slide({
+function slider({
   centered,
   vertical,
   loop,
@@ -16,7 +16,7 @@ function slide({
   autoplay,
   autoplayMs,
   breakpoints,
-}: Props<typeof slide.props> & { mode: TOptions["mode"] }) {
+}: Props<typeof slider.props> & { mode: TOptions["mode"] }) {
   const refHost = useRef();
   const refSlide = useRef();
   const [childNodes, update] = useChildNodes();
@@ -99,7 +99,7 @@ function slide({
   );
 }
 
-slide.props = {
+slider.props = {
   breakpoints: Object,
   centered: Boolean,
   vertical: {
@@ -143,6 +143,6 @@ slide.props = {
   },
 };
 
-slide.styles = style;
+slider.styles = style;
 
-export const Slide = c(slide);
+export const Slider = c(slider);

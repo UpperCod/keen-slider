@@ -1,6 +1,6 @@
 # @uppercod/keen-slider
 
-Es un wrapper para keen-slider como webcomponent creado con Atomico.
+It is a wrapper for keen-slider as a webcomponent created with Atomico.
 
 ## Example
 
@@ -17,13 +17,15 @@ Es un wrapper para keen-slider como webcomponent creado con Atomico.
 
 ### React
 
-```jsx
+To use in React you must first install the dependency `@atomico/react`.
 
+```jsx
+import {Slider}
 ```
 
 ## Api
 
-actualemnte el componente refleja las siguientes opciones del [api original](https://keen-slider.io/api/#api).
+currently the component reflects the following options from the [original api](https://keen-slider.io/api/#api).
 
 ### centered
 

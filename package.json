@@ -28,7 +28,6 @@
     "@atomico/exports": "^0.16.1",
     "@uppercod/vite-meta-url": "latest",
     "@uppercod/vite-meta-url-load-css": "latest",
-    "csso": "latest",
     "typescript": "^4.3.4",
     "vite": "latest"
   }

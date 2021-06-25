@@ -1,0 +1,1 @@
+export const Slide: import("@atomico/react").Component<typeof import("@uppercod/keen-slider/components").Slide>
