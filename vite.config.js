@@ -3,6 +3,7 @@ import loadCss from "@uppercod/vite-meta-url-load-css";
 
 /**@type {import("vite").UserConfig} */
 const config = {
+  base: "/keen-slider",
   esbuild: {
     jsxFactory: "_jsx",
     jsxInject: `import {h as _jsx, css as _css} from 'atomico'`,
