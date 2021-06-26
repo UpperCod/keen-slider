@@ -1,11 +1,12 @@
 {
   "name": "@uppercod/keen-slider",
+  "type": "module",
   "description": "It is a wrapper for keen-slider as a webcomponent created with Atomico",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/uppercod/keen-slider.git"
   },
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "start": "vite",
     "build": "vite build",
@@ -52,5 +53,6 @@
     }
   },
   "types": "types/components.d.ts",
+  "main": "./dest/components.js",
   "module": "./dest/components.js"
 }
