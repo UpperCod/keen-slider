@@ -5,7 +5,7 @@
     "type": "git",
     "url": "git+ssh://git@github.com/uppercod/keen-slider.git"
   },
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "start": "vite",
     "build": "vite build",
@@ -19,7 +19,7 @@
     "keen-slider": "^5.5.1"
   },
   "devDependencies": {
-    "@atomico/exports": "^0.16.1",
+    "@atomico/exports": "^0.17.0",
     "@uppercod/vite-meta-url": "latest",
     "@uppercod/vite-meta-url-load-css": "latest",
     "typescript": "^4.3.4",
@@ -28,7 +28,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "module": "./dest/components.js",
   "exports": {
     "./components.react": "./dest/components.react.js",
     "./components.visibility": "./dest/components.visibility.css",
@@ -52,5 +51,6 @@
       "optional": true
     }
   },
-  "types": "types/components.d.ts"
+  "types": "types/components.d.ts",
+  "module": "./dest/components.js"
 }
