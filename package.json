@@ -6,7 +6,7 @@
     "type": "git",
     "url": "git+ssh://git@github.com/uppercod/keen-slider.git"
   },
-  "version": "0.0.2",
+  "version": "0.0.4",
   "scripts": {
     "start": "vite",
     "build": "vite build",
@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@atomico/hooks": "^3.9.1",
-    "atomico": "latest",
+    "atomico": "^1.24.0",
     "keen-slider": "^5.5.1"
   },
   "devDependencies": {
@@ -53,6 +53,5 @@
     }
   },
   "types": "types/components.d.ts",
-  "main": "./dest/components.js",
   "module": "./dest/components.js"
 }

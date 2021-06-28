@@ -22,3 +22,7 @@
 ::slotted([slot="right"]) {
   right: 0;
 }
+
+.keen-slider {
+  width: 100%;
+}
