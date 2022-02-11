@@ -1,5 +1,6 @@
 {
     "include": ["src/**/*", "vite.config.js","types.d.ts"],
+    "exclude": ["types/**/*"],
     "compilerOptions": {
       "jsx": "react-jsx",
       "jsxImportSource": "atomico",

@@ -28,5 +28,30 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "exports": {
+    "./components.react": "./dist/components.react.js",
+    "./components.visibility": "./dist/components.visibility.css",
+    ".": "./dist/components.js"
+  },
+  "typesVersions": {
+    "*": {
+      "components.react": [
+        "./types/components.react.d.ts"
+      ],
+      "components": [
+        "./types/components.d.ts"
+      ]
+    }
+  },
+  "peerDependencies": {
+    "@atomico/react": "latest"
+  },
+  "peerDependenciesMeta": {
+    "@atomico/react": {
+      "optional": true
+    }
+  },
+  "module": "./dist/components.js",
+  "types": "types/components.d.ts"
 }

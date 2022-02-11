@@ -56,7 +56,12 @@ function component(
           ["origin", props.slidesOrigin],
         ]
           .filter(([, value]) => value != null)
-          .reduce((props, [prop, value]) => ({ ...props, [prop]: value }), {}),
+          .reduce(
+            (props, [prop, value]) =>
+              //@ts-ignore
+              ({ ...props, [prop]: value }),
+            {}
+          ),
       })
         .filter(([, value]) => value != null)
         .reduce(
