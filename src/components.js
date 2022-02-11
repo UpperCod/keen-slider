@@ -1,4 +1,4 @@
-import { Slider } from "./slider/slider.tsx";
-export { Slider } from "./slider/slider.tsx";
+import { Slider } from "./slider/slider";
+export { Slider } from "./slider/slider";
 
 customElements.define("keen-slider", Slider);

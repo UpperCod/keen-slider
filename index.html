@@ -9,8 +9,7 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <!-- <script async type="module" src="./src/components.js"></script> -->
-    <script src="https://jspm.dev/@uppercod/keen-slider" type="module"></script>
+    <script async type="module" src="./src/components.js"></script>
   </head>
   <body>
     <style>
@@ -23,7 +22,7 @@
         color: white;
       }
 
-      .box {
+      .slide {
         height: 100vh;
         display: flex;
         align-items: center;
@@ -44,21 +43,44 @@
         color: unset;
       }
     </style>
-    <keen-slider autoplay slides-per-view="1, 2 720px">
-      <div class="box">
+    <keen-slider
+      class="slider"
+      autoplay
+      selector=".slide"
+      slides-per-view="2"
+      slides-spacing="15"
+      dots
+    >
+      <div class="slide">
         <h1>1</h1>
       </div>
-      <div class="box">
+      <div class="slide">
         <h1>2</h1>
       </div>
-      <div class="box">
+      <div class="slide">
         <h1>3</h1>
       </div>
-      <div class="box">
+      <div class="slide">
         <h1>4</h1>
       </div>
-      <button class="icon" slot="left">←</button>
-      <button class="icon" slot="right">→</button>
+      <button class="icon" slot="to-left">←</button>
+      <button class="icon" slot="to-right">→</button>
+    </keen-slider>
+    <keen-slider class="slider" autoplay dots>
+      <div class="slide">
+        <h1>1</h1>
+      </div>
+      <div class="slide">
+        <h1>2</h1>
+      </div>
+      <div class="slide">
+        <h1>3</h1>
+      </div>
+      <div class="slide">
+        <h1>4</h1>
+      </div>
+      <button class="icon" slot="to-left">←</button>
+      <button class="icon" slot="to-right">→</button>
     </keen-slider>
   </body>
 </html>

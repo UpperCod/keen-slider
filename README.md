@@ -59,3 +59,11 @@ currently the component reflects the following options from the [original api](h
 | breakpoints                     | Object                 | defines the breakpoints for the instance of KeenSlider, eg `'(min-width: 720px) and (max-width: 1000px)': {loop: false}` |
 
 ### Events
+
+## breakpoints
+
+```html
+<keen-slider
+  breakpoints='{">=500px": { "loop": false, "duration": 500, "autoplay": false }}'
+></keen-slider>
+```

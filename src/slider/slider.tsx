@@ -1,148 +1,219 @@
-import { Props, c, useEffect, useRef, useProp, useEvent } from "atomico";
+import {
+  Props,
+  c,
+  useEffect,
+  useProp,
+  css,
+  useHost,
+  useRef,
+  Meta,
+  DOMEvent,
+} from "atomico";
 import { useChildNodes } from "@atomico/hooks/use-child-nodes";
 import { useMutationObserver } from "@atomico/hooks/use-mutation-observer";
-import KeenSlider, { TOptions } from "keen-slider";
-import { useResponsiveProp } from "./use-responsive-prop.js";
-import style from "./slider.css";
+import KeenSlider from "keen-slider";
+import styleKeenSlider from "./style-keen-slider";
 
-function slider({
-  centered,
-  vertical,
-  loop,
-  initial,
-  duration,
-  mode,
-  spacing,
-  autoplay,
-  autoplayMs,
-  breakpoints,
-}: Props<typeof slider.props> & { mode: TOptions["mode"] }) {
-  const refHost = useRef();
-  const refSlide = useRef();
+function component(
+  props: Props<typeof component>
+): Meta<DOMEvent<"SliderMounted">> {
+  const host = useHost();
+  const refSlider = useRef();
   const [childNodes, update] = useChildNodes();
-  useMutationObserver(refHost, update, { childList: true });
+  const children = childNodes.filter((child) =>
+    child instanceof HTMLElement
+      ? props.selector
+        ? child.matches(props.selector)
+        : !child.slot || child.slot.startsWith("slide-")
+      : false
+  ) as HTMLElement[];
 
-  const slidesPerView = useResponsiveProp("slidesPerView", Number);
+  useMutationObserver(host, update, { childList: true });
 
   const [slider, setSlider] = useProp("slider");
-  const [autoplayPause, setAutoplayPause] = useProp("autoplayPause");
-
-  const dispatchSlideChanged = useEvent("SlideChanged");
-  const dispatchSlideDragStart = useEvent("SlideDragStart");
-  const dispatchSlideDragEnd = useEvent("SlideDragEnd");
-  const dispatchSlideMove = useEvent("SlideDragMove");
-  const dispatchSlideDestroyed = useEvent("Slidedestroyed");
+  const [hover, setHover] = useProp<boolean>("hover");
+  const [currentIndex, setCurrentIndex] = useProp<number>("currentSlide");
 
   useEffect(() => {
-    const slider = new KeenSlider(refSlide.current, {
-      slidesPerView,
-      centered,
-      vertical,
-      loop,
-      initial,
-      duration,
-      mode,
-      spacing,
-      breakpoints,
-      slideChanged: dispatchSlideChanged,
-      dragStart: dispatchSlideDragStart,
-      dragEnd: dispatchSlideDragEnd,
-      move: dispatchSlideMove,
-      destroyed: dispatchSlideDestroyed,
+    const slider = new KeenSlider(refSlider.current, {
+      slideChanged(slider) {
+        setCurrentIndex(slider.track.details.rel);
+      },
+      ...Object.entries({
+        vertical: props.vertical,
+        breakpoints: props.breakpoints,
+        duration: props.duration,
+        drag: props.drag,
+        dragSpeed: props.dragSpeed,
+        initial: props.initial,
+        loop: props.loop || props.autoplay,
+        mode: props.mode,
+        rtl: props.rtl,
+        rubberband: props.rubberband,
+        slides: [
+          ["perView", props.slidesPerView],
+          ["spacing", props.slidesSpacing],
+          ["origin", props.slidesOrigin],
+        ]
+          .filter(([, value]) => value != null)
+          .reduce((props, [prop, value]) => ({ ...props, [prop]: value }), {}),
+      })
+        .filter(([, value]) => value != null)
+        .reduce(
+          (props, [prop, value]) => ({
+            ...props,
+            [prop]: value,
+          }),
+          {}
+        ),
     });
 
     setSlider(slider);
-
-    return () => slider.destroy();
-  }, [
-    slidesPerView,
-    centered,
-    vertical,
-    loop,
-    initial,
-    duration,
-    mode,
-    spacing,
-  ]);
-
-  const children = childNodes.filter(
-    (child) =>
-      child instanceof HTMLElement && !["left", "right"].includes(child.slot)
-  ) as Element[];
+  }, []);
 
   useEffect(() => {
-    if (autoplay && slider && !autoplayPause) {
-      const idInterval = setInterval(slider.next, autoplayMs);
-      return () => clearInterval(idInterval);
+    if (!slider || !props.autoplay) return;
+
+    if (!hover) {
+      const interval = setInterval(() => slider.next(), props.autoplayLoop);
+      return () => clearInterval(interval);
     }
-  }, [slider, autoplayPause]);
+  }, [slider, hover, props.autoplay, props.autoplayLoop]);
+
   return (
     <host
       shadowDom
-      ref={refHost}
-      onSlideDragStart={() => setAutoplayPause(true)}
-      onSlideDragEnd={() => setAutoplayPause(false)}
-      onmouseover={() => setAutoplayPause(true)}
-      onmouseout={() => setAutoplayPause(false)}
+      onmouseover={() => setHover(true)}
+      onmouseleave={() => setHover(false)}
     >
-      <div class="keen-slider" ref={refSlide}>
-        {children.map((child, slot) => (
+      <div class="keen-slider" ref={refSlider}>
+        {children.map((el, index) => (
           <div class="keen-slider__slide">
-            <slot name={(child.slot = "" + slot)}></slot>
+            <slot name={(el.slot = "slide-" + index)}></slot>
           </div>
         ))}
       </div>
-
-      <slot name="left" onclick={slider?.prev}></slot>
-      <slot name="right" onclick={slider?.next}></slot>
+      <slot part="to-left" name="to-left" onclick={slider?.prev}></slot>
+      <slot part="to-right" name="to-right" onclick={slider?.next}></slot>
+      {props.dots && (
+        <div
+          part="dots"
+          class="dots"
+          style={`--dots-length: ${children.length}`}
+        >
+          {children.map((el, index) => (
+            <button
+              part="dots-item"
+              class={`dots-item ${
+                currentIndex === index ? "dots-item--active" : ""
+              }`}
+              onclick={() => slider?.moveToIdx(index)}
+            ></button>
+          ))}
+        </div>
+      )}
     </host>
   );
 }
 
-slider.props = {
+component.props = {
+  currentSlide: {
+    type: Number,
+    value: 0,
+  },
   breakpoints: Object,
-  centered: Boolean,
-  vertical: {
+  duration: Number,
+  disabled: Boolean,
+  drag: Boolean,
+  dragSpeed: Number,
+  initial: Number,
+  loop: Boolean,
+  autoplay: Boolean,
+  autoplayLoop: {
+    type: Number,
+    value: 2000,
+  },
+  slidesPerView: Number,
+  slidesSpacing: Number,
+  slidesOrigin: String,
+  dots: Boolean,
+  hover: {
     type: Boolean,
-  },
-  loop: {
-    type: Boolean,
-  },
-  spacing: {
-    type: Number,
-    value: 0,
-  },
-  initial: {
-    type: Number,
-    value: 0,
-  },
-  duration: {
-    type: Number,
-    value: 500,
-  },
-  slidesPerView: {
-    value: 1,
+    reflect: true,
   },
   mode: {
     type: String,
-    value: "snap",
+    value: (): "snap" | "free" | "free-snap" => "snap",
   },
-  autoplay: {
-    type: Boolean,
+  range: {
+    type: Object,
+    value: (): { min?: number; max?: number; align?: boolean } => ({}),
   },
-  autoplayMs: {
-    type: Number,
-    value: 5000,
-  },
+  rtl: Boolean,
+  rubberband: Boolean,
+  selector: String,
+  vertical: { type: Boolean, reflect: true },
   slider: {
     type: Object,
     event: { type: "SliderMounted" },
   },
-  autoplayPause: {
-    type: Boolean,
-  },
 };
 
-slider.styles = style;
+component.styles = [
+  styleKeenSlider,
+  css`
+    :host {
+      position: relative;
+      display: block;
+      --dots-gap: 1rem;
+      --dots-opacity: 0.5;
+      --dots-transition: 0.3s ease all;
+    }
 
-export const Slider = c(slider);
+    ::slotted([slot="to-left"]),
+    ::slotted([slot="to-right"]) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      z-index: 1;
+    }
+
+    ::slotted([slot="to-left"]) {
+      left: 0;
+    }
+
+    ::slotted([slot="to-right"]) {
+      right: 0;
+    }
+    .dots {
+      position: absolute;
+      bottom: 0px;
+      left: 50%;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(var(--dots-length), auto);
+      grid-gap: var(--dots-gap);
+      transform: translate(-50%, -100%);
+    }
+    .dots-item {
+      width: 10px;
+      height: 10px;
+      padding: 0px;
+      border-radius: 100px;
+      border: none;
+      color: white;
+      cursor: pointer;
+      opacity: var(--dots-opacity);
+      transition: var(--dots-transition);
+    }
+    .dots-item--active {
+      --dots-opacity: 1;
+    }
+  `,
+];
+
+export const Slider = c(component);
