@@ -6,7 +6,7 @@
     "type": "git",
     "url": "git+ssh://git@github.com/uppercod/keen-slider.git"
   },
-  "version": "0.1.0",
+  "version": "0.1.1",
   "scripts": {
     "start": "vite --force",
     "build": "vite build",
