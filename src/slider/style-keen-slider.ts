@@ -1,6 +1,9 @@
 import { css } from "atomico";
 
 export default css`
+  .keen-slider {
+    max-height: 100%;
+  }
   .keen-slider:not([data-keen-slider-disabled]) {
     align-content: flex-start;
     display: flex;
